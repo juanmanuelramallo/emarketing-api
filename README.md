@@ -1,24 +1,19 @@
-# README
+# eMarketing - API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Juan Manuel Ramallo
 
-Things you may want to cover:
+---
 
-* Ruby version
+Para correr esta app se requiere:
 
-* System dependencies
+- Tener instalado Ruby y Rails
+- Ejecutar `bundle install`
+- Correr aplicación con `rails s`
 
-* Configuration
+Dependencias:
 
-* Database creation
+- PostgreSQL
+- Ruby 2.3.1
+- Rails 5.1.4
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+---
