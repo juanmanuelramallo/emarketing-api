@@ -6,4 +6,6 @@ class ContactSerializer < ActiveModel::Serializer
              :phone,
              :country,
              :city
+
+  has_many :tags
 end

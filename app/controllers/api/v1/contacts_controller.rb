@@ -6,7 +6,7 @@ module Api::V1
       render json: Contact.all.order(created_at: :desc)
     end
 
-    # GET /v1/contact/:id
+    # GET /v1/contacts/:id
     def show
       render json: Contact.find(params[:id])
     end
