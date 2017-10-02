@@ -31,10 +31,21 @@ module Api::V1
       end
     end
 
+    # GET /v1/contacts/search
+    def search
+      render json: Contact.search_by_full_name_or_email(search_params[:name_or_email])
+
+      #TODO: Search by tags
+    end
+
     private
 
     def contact_params
       params.require(:contact).permit(:first_name, :last_name, :email, :phone, :country, :city, :tags, :campaigns)
+    end
+
+    def search_params
+      params.require(:contact).permit(:name_or_email, :tags)
     end
   end
 end

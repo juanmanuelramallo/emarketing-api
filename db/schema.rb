@@ -10,10 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170930113503) do
+ActiveRecord::Schema.define(version: 20171002032127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "unaccent"
+
+  create_table "campaigns", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "campaigns_contacts", id: false, force: :cascade do |t|
+    t.bigint "campaign_id"
+    t.bigint "contact_id"
+    t.index ["campaign_id"], name: "index_campaigns_contacts_on_campaign_id"
+    t.index ["contact_id"], name: "index_campaigns_contacts_on_contact_id"
+  end
+
+  create_table "campaigns_tags", id: false, force: :cascade do |t|
+    t.bigint "campaign_id"
+    t.bigint "tag_id"
+    t.index ["campaign_id"], name: "index_campaigns_tags_on_campaign_id"
+    t.index ["tag_id"], name: "index_campaigns_tags_on_tag_id"
+  end
 
   create_table "contacts", force: :cascade do |t|
     t.string "first_name"
