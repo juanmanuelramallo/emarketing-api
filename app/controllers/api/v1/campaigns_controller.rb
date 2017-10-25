@@ -1,5 +1,6 @@
 module Api::V1
   class CampaignsController < ApiController
+    before_action :set_campaign, only: [:show, :update, :destroy]
 
     # GET /v1/campaigns
     def index
@@ -8,7 +9,7 @@ module Api::V1
 
     # GET /v1/campaign/:id
     def show
-      render json: Campaign.find(params[:id])
+      render json: @campaign
     end
 
     # POST /v1/campaigns
@@ -16,10 +17,12 @@ module Api::V1
       campaign = Campaign.new(title: campaign_params[:title], body: campaign_params[:body])
       if campaign.save
         campaign_params[:tag_ids].each do |tag_id|
-          campaign.tag_ids << tag_id unless campaign.tag_ids.include?(tag_id)
+          tag = Tag.find_by id: tag_id
+          campaign.tags << tag unless tag.nil? or campaign.tags.include?(tag)
         end
         campaign_params[:contact_ids].each do |contact_id|
-          campaign.contact_ids << contact_id unless campaign.contact_ids.include?(contact_id)
+          contact = Contact.find_by id: contact_id
+          campaign.contacts << contact unless contact.nil? or campaign.contacts.include?(contact)
         end
         render json: campaign, status: :ok
       else
@@ -27,26 +30,36 @@ module Api::V1
       end
     end
 
-    # PUT /v1/tags/:id
+    # PUT /v1/campaigns/:id
     def update
-      campaign = Campaign.find(params[:id])
-      if campaign.update_attributes(title: campaign_params[:title], body: campaign_params[:body])
+      if @campaign.update_attributes(title: campaign_params[:title], body: campaign_params[:body])
         campaign_params[:tag_ids].each do |tag_id|
-          campaign.tag_ids << tag_id unless campaign.tag_ids.include?(tag_id)
+          tag = Tag.find_by id: tag_id
+          @campaign.tags << tag unless tag.nil? or @campaign.tags.include?(tag)
         end
         campaign_params[:contact_ids].each do |contact_id|
-          campaign.contact_ids << contact_id unless campaign.contact_ids.include?(contact_id)
+          contact = Contact.find_by id: contact_id
+          @campaign.contacts << contact unless contact.nil? or @campaign.contacts.include?(contact)
         end
-        render json: campaign, status: :ok
+        render json: @campaign, status: :ok
       else
-        render json: campaign, status: :unprocessable_entity
+        render json: @campaign, status: :unprocessable_entity
       end
+    end
+
+    # DELETE /v1/campaigns/:id
+    def destroy
+      render json: @campaign.destroy
     end
 
     private
 
+    def set_campaign
+      @campaign = Campaign.find(params[:id])
+    end
+
     def campaign_params
-      params.require(:campaign).permit(:title, :body, :tag_ids, :contact_ids)
+      params.require(:campaign).permit(:title, :body, tag_ids: [], contact_ids: [])
     end
   end
 end
