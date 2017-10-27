@@ -1,8 +1,5 @@
 # eMarketing - API
 
-Juan Manuel Ramallo
-
----
 ### Primeros pasos 🐾
 
 Para correr esta app se requiere:
@@ -14,7 +11,7 @@ Para correr esta app se requiere:
 O bien se puede correr con **docker**:
 
 - Ejecutar `docker-compose up`
-- Luego para crear la base de datos y cargarle datos de prueba ejecutar `docker-compose run web rails db:create db:migrate db:seed`\
+- Luego para crear la base de datos y cargarle datos de prueba ejecutar `docker-compose run web rails db:create db:migrate db:seed`
 
 Dependencias:
 
@@ -22,7 +19,13 @@ Dependencias:
 - Ruby 2.3.1
 - Rails 5.1.4
 
----
+### Acerca de la autenticación
+
+* Cada usuario tiene un contraseña
+* Cuando el usuario inicia sesión con su email y contraseña, lo que hace es pedir un token a la aplicación
+* Luego cada pedido que el usuario haga deberá hacerlo con su token
+* El token es válido durante una hora desde que se asignó
+
 ### Rutas 🛣
 Verbo  |URL
 -------|------------------------------
@@ -46,3 +49,6 @@ GET    |/v1/tags/:id(.:format)
 PATCH  |/v1/tags/:id(.:format)
 PUT    |/v1/tags/:id(.:format)
 DELETE |/v1/tags/:id(.:format)
+
+----
+Juan Manuel Ramallo
