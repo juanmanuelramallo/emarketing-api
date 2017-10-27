@@ -1,10 +1,11 @@
 module Api::V1
   class CampaignsController < ApiController
+    before_action :authenticate_user
     before_action :set_campaign, only: [:show, :update, :destroy]
 
     # GET /v1/campaigns
     def index
-      render json: Campaign.all.order(created_at: :desc)
+      render json: current_user.campaigns.all.order(created_at: :desc)
     end
 
     # GET /v1/campaign/:id
@@ -55,7 +56,7 @@ module Api::V1
     private
 
     def set_campaign
-      @campaign = Campaign.find(params[:id])
+      @campaign = current_user.campaigns.find(params[:id])
     end
 
     def campaign_params
