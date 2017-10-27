@@ -6,6 +6,13 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+User.create(email:"juan@test.com", name: "Juan", last_name: "Estebanez", password: "123456", country: "Argentina", city: "La Plata", phone: "5422111233323")
+User.create(email:"carlitos@test.com", name: "Carlos", last_name: "Robert", password: "123456", country: "Argentina", city: "La Plata", phone: "5422188392323")
+User.create(email:"lucho@test.com", name: "Luis", last_name: "Gonzalez", password: "123456", country: "Argentina", city: "La Plata", phone: "542218823740234")
+User.create(email:"happy@test.com", name: "Happy", last_name: "Quinn", password: "123456", country: "Argentina", city: "La Plata", phone: "5422162328373")
+
+user_ids = User.all.map(&:id)
+
 #  Contacts
 puts "Creating contacts"
 10.times do
@@ -16,13 +23,14 @@ puts "Creating contacts"
     c.phone = Faker::PhoneNumber.cell_phone
     c.country = Faker::Address.country
     c.city = Faker::Address.city
+    c.user_id = user_ids.sample
   end.save
 end
 
 # Tags
 puts "Creating tags"
 50.times do
-  t = Tag.new(name: Faker::Lorem.word)
+  t = Tag.new(name: Faker::Lorem.word, user_id: user_ids.sample)
   while t.save == false do
     t.name = Faker::Lorem.word
   end
@@ -41,7 +49,8 @@ c = Campaign.create(
     <p style='color: gray'>Como estas?</p>
     <p>Te escribimos para ofrecerte <strong>la mejor propuesta de tu vida</strong></p>
     <h3>Saludos</h3>
-  "
+  ",
+  user_id: user_ids.first
 )
 
 Tag.first(3).each do |tag|
