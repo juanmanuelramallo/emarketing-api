@@ -1,6 +1,5 @@
 module Api::V1
   class ContactsController < ApiController
-    before_action :authenticate_user
     before_action :set_contact, only: [:show, :update, :destroy]
 
     # GET /v1/contacts
@@ -15,7 +14,7 @@ module Api::V1
 
     # POST /v1/contacts
     def create
-      contact = Contact.new(contact_params)
+      contact = Contact.new(contact_params.merge(user_id: current_user.id))
       if contact.save
         render json: contact, status: :ok
       else
@@ -52,7 +51,7 @@ module Api::V1
     end
 
     def contact_params
-      params.require(:contact).permit(:first_name, :last_name, :email, :phone, :country, :city, :tags, :campaigns)
+      params.require(:contact).permit(:first_name, :last_name, :email, :phone, :country, :city)
     end
 
     def search_params
