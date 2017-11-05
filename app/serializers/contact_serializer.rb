@@ -5,7 +5,12 @@ class ContactSerializer < ActiveModel::Serializer
              :email,
              :phone,
              :country,
-             :city
+             :city,
+             :tag_ids
 
   has_many :tags
+
+  def tag_ids
+    object.tags.map(&:id)
+  end
 end

@@ -1,5 +1,6 @@
 module Api::V1
   class ContactsController < ApiController
+    before_action :authenticate_user
     before_action :set_contact, only: [:show, :update, :destroy]
 
     # GET /v1/contacts
@@ -51,7 +52,7 @@ module Api::V1
     end
 
     def contact_params
-      params.require(:contact).permit(:first_name, :last_name, :email, :phone, :country, :city)
+      params.require(:contact).permit(:first_name, :last_name, :email, :phone, :country, :city, tag_ids: [])
     end
 
     def search_params

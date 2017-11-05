@@ -6,58 +6,59 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.create(email:"juan@test.com", name: "Juan", last_name: "Estebanez", password: "123456", country: "Argentina", city: "La Plata", phone: "5422111233323")
-User.create(email:"carlitos@test.com", name: "Carlos", last_name: "Robert", password: "123456", country: "Argentina", city: "La Plata", phone: "5422188392323")
-User.create(email:"lucho@test.com", name: "Luis", last_name: "Gonzalez", password: "123456", country: "Argentina", city: "La Plata", phone: "542218823740234")
-User.create(email:"happy@test.com", name: "Happy", last_name: "Quinn", password: "123456", country: "Argentina", city: "La Plata", phone: "5422162328373")
+puts "Creating users"
+u1 = User.create(email:"juan@test.com", name: "Juan", last_name: "Estebanez", password: "123456", country: "Argentina", city: "La Plata", phone: "5422111233323")
+u2 = User.create(email:"carlitos@test.com", name: "Carlos", last_name: "Robert", password: "123456", country: "Argentina", city: "La Plata", phone: "5422188392323")
+u3 = User.create(email:"lucho@test.com", name: "Luis", last_name: "Gonzalez", password: "123456", country: "Argentina", city: "La Plata", phone: "542218823740234")
+u4 = User.create(email:"happy@test.com", name: "Happy", last_name: "Quinn", password: "123456", country: "Argentina", city: "La Plata", phone: "5422162328373")
 
-user_ids = User.all.map(&:id)
+puts "Creating tags"
+%w[Joven Profesional Arquitecto Música Arte Fiesta Electrónica Comida Repostería Rock Salsa Cumbia Cine Películas Hollywood Fútbol Deportes Libros Lectura Política].map do |tag|
+  User.all.each do |user|
+    Tag.create(name: tag, user_id: user.id)
+  end
+end
 
 #  Contacts
 puts "Creating contacts"
 10.times do
-  Contact.new.tap do |c|
-    c.first_name = Faker::Name.first_name
-    c.last_name = Faker::Name.last_name
-    c.email = Faker::Internet.email(c.first_name)
-    c.phone = Faker::PhoneNumber.cell_phone
-    c.country = Faker::Address.country
-    c.city = Faker::Address.city
-    c.user_id = user_ids.sample
-  end.save
-end
-
-# Tags
-puts "Creating tags"
-50.times do
-  t = Tag.new(name: Faker::Lorem.word, user_id: user_ids.sample)
-  while t.save == false do
-    t.name = Faker::Lorem.word
-  end
-  rand(20).times do
-    rand_number = rand(Contact.all.count)
-    contact = Contact.all[rand_number]
-    contact.tags << t unless contact.tags.include?(t)
+  User.all.each do |user|
+    new_contact = Contact.new.tap do |c|
+      c.first_name = Faker::Name.first_name
+      c.last_name = Faker::Name.last_name
+      c.email = Faker::Internet.email(c.first_name)
+      c.phone = Faker::PhoneNumber.cell_phone
+      c.country = Faker::Address.country
+      c.city = Faker::Address.city
+      c.user_id = user.id
+    end
+    new_contact.save
+    (rand(5) + 1).times do
+      tag_selected = user.tags.sample
+      new_contact.tags << tag_selected unless new_contact.tags.include?(tag_selected)
+    end
   end
 end
 
 # Campaigns
 puts "Creating campaign"
-c = Campaign.create(
+new_campaign = Campaign.create(
   title: "El poder de hoy",
   body: "<h1 style='font-variant: small-caps'>Hola</h1>
     <p style='color: gray'>Como estas?</p>
     <p>Te escribimos para ofrecerte <strong>la mejor propuesta de tu vida</strong></p>
     <h3>Saludos</h3>
   ",
-  user_id: user_ids.first
+  user_id: User.all.first
 )
 
-Tag.first(3).each do |tag|
-  c.tags << tag
+3.times do
+  tag_selected = User.first.tags.sample
+  new_campaign.tags << tag_selected unless new_campaign.tags.include?(tag_selected)
 end
 
-Contact.first(5).each do |contact|
-  c.contacts << contact
+10.times do
+  contact_selected = User.first.contacts.sample
+  new_campaign.contacts << contact_selected unless new_campaign.contacts.include?(contact_selected)
 end
 
