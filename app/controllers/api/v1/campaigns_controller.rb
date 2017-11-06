@@ -1,7 +1,7 @@
 module Api::V1
   class CampaignsController < ApiController
     before_action :authenticate_user
-    before_action :set_campaign, only: [:show, :update, :destroy]
+    before_action :set_campaign, only: [:show, :send_emails, :update, :destroy]
 
     # GET /v1/campaigns
     def index
@@ -11,6 +11,12 @@ module Api::V1
     # GET /v1/campaign/:id
     def show
       render json: @campaign
+    end
+
+    # POST /v1/campaign/:id/send_emails
+    def send_emails
+      CampaignMailer.send_campaign(@campaign).deliver_now
+      render json: { message: "La campaña fue enviada correctamente a #{@campaign.contacts.count} #{"contacto".pluralize(@campaign.contacts.count)}" }, status: :ok
     end
 
     # POST /v1/campaigns

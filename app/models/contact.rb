@@ -2,6 +2,7 @@ class Contact < ApplicationRecord
   include PgSearch
   has_and_belongs_to_many :campaigns
   has_and_belongs_to_many :tags
+  belongs_to :user
 
   pg_search_scope :search_by_full_name_or_email,
                   against: [
