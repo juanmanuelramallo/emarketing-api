@@ -33,6 +33,16 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    port: ENV['MAILTRAP_PORT'],
+    address: ENV['MAILTRAP_ADDRESS'],
+    user_name: ENV['MAILTRAP_LOGIN'],
+    password: ENV['MAILTRAP_PASSWORD'],
+    domain: ENV['MAILTRAP_ADDRESS'],
+    authentication: :cram_md5
+  }
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 

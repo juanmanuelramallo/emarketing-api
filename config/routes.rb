@@ -4,9 +4,11 @@ Rails.application.routes.draw do
   scope module: 'api' do
     namespace :v1 do
       resources :users, only: [:create, :update]
-      resources :campaigns
+      resources :campaigns do
+        post :send_emails, on: :member
+      end
       resources :contacts do
-        get 'search', on: :collection
+        get :search, on: :collection
       end
       resources :tags
     end

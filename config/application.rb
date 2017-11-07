@@ -29,5 +29,8 @@ module Emarketing
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    config.action_view.sanitized_allowed_tags = ['strong', 'em', 'a', 'b', 'p', 'span']
+    config.action_view.sanitized_allowed_attributes = ['href', 'title', 'style']
   end
 end
