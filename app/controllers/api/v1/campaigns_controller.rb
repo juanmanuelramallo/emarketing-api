@@ -59,6 +59,12 @@ module Api::V1
       render json: @campaign.destroy
     end
 
+    # GET /v1/campaigns/search
+    def search
+      campaigns = current_user.campaigns.search_by_title(search_params[:title])
+      render json: campaigns
+    end
+
     private
 
     def set_campaign
@@ -67,6 +73,10 @@ module Api::V1
 
     def campaign_params
       params.require(:campaign).permit(:title, :body, tag_ids: [], contact_ids: [])
+    end
+
+    def search_params
+      params.require(:campaign).permit(:title)
     end
   end
 end
