@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  contact: one
+  campaign: one
+  sent_times: 1
+  opened_times: 1
+  clicks: 1
+
+two:
+  contact: two
+  campaign: two
+  sent_times: 1
+  opened_times: 1
+  clicks: 1

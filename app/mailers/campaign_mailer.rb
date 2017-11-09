@@ -1,7 +1,7 @@
 class CampaignMailer < ApplicationMailer
-  def send_campaign(campaign)
+  def send_campaign(campaign, contact)
     @campaign = campaign
 
-    mail to: campaign.contacts.map(&:email), subject: campaign.title
+    mail to: contact.email, subject: campaign.title
   end
 end

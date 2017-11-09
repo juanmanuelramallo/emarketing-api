@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171027040411) do
+ActiveRecord::Schema.define(version: 20171108194539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,18 @@ ActiveRecord::Schema.define(version: 20171027040411) do
     t.index ["tag_id"], name: "index_contacts_tags_on_tag_id"
   end
 
+  create_table "emails", force: :cascade do |t|
+    t.bigint "contact_id"
+    t.bigint "campaign_id"
+    t.integer "sent_times"
+    t.integer "opened_times"
+    t.integer "clicks"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["campaign_id"], name: "index_emails_on_campaign_id"
+    t.index ["contact_id"], name: "index_emails_on_contact_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -79,4 +91,6 @@ ActiveRecord::Schema.define(version: 20171027040411) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "emails", "campaigns"
+  add_foreign_key "emails", "contacts"
 end

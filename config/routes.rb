@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       resources :campaigns do
         get :search, on: :collection
         post :send_emails, on: :member
+        post :send_email, on: :member
+        get :email, on: :member
       end
       resources :contacts do
         get :search, on: :collection
