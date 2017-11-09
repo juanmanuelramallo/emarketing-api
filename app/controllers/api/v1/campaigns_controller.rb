@@ -44,19 +44,22 @@ module Api::V1
 
     # POST /v1/campaigns
     def create
-      campaign = Campaign.new(title: campaign_params[:title], body: campaign_params[:body])
+      campaign = Campaign.new(title: campaign_params[:title], body: campaign_params[:body], user: current_user)
       if campaign.save
+
         campaign_params[:tag_ids].each do |tag_id|
           tag = Tag.find_by id: tag_id
           campaign.tags << tag unless tag.nil? or campaign.tags.include?(tag)
-        end
+        end if campaign_params[:tag_ids]
+
         campaign_params[:contact_ids].each do |contact_id|
           contact = Contact.find_by id: contact_id
           campaign.contacts << contact unless contact.nil? or campaign.contacts.include?(contact)
-        end
+        end if campaign_params[:contact_ids]
+
         render json: campaign, status: :ok
       else
-        render json: campaign, status: :unprocessable_entity
+        render json: campaign.errors, status: :unprocessable_entity
       end
     end
 
