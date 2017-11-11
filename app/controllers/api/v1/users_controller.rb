@@ -11,11 +11,14 @@ module Api::V1
       end
     end
 
+    def find_by_email
+      render json: User.find_by(email: params[:email]), status: :ok
+    end
+
     private
 
     def user_params
       params.require(:user).permit(:name, :last_name, :email, :password, :phone, :country, :city)
     end
-
   end
 end
