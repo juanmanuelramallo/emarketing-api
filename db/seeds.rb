@@ -49,7 +49,7 @@ new_campaign = Campaign.create(
     <p>Te escribimos para ofrecerte <strong>la mejor propuesta de tu vida</strong></p>
     <h3>Saludos</h3>
   ",
-  user_id: User.all.first
+  user: User.all.first
 )
 
 3.times do
