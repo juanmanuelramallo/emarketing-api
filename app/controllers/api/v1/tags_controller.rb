@@ -15,11 +15,11 @@ module Api::V1
 
     # POST /v1/tags
     def create
-      tag = Tag.new(tag_params)
+      tag = Tag.new(tag_params.merge(user: current_user))
       if tag.save
         render json: tag, status: :ok
       else
-        render json: tag.errors, status: :unprocessable_entity
+        render json: tag.errors.full_messages, status: :unprocessable_entity
       end
     end
 
