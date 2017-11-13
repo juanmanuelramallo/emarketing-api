@@ -40,6 +40,7 @@ module Api::V1
     # GET /v1/contacts/search
     def search
       contacts = current_user.contacts.search_by_full_name_or_email(search_params[:name_or_email])
+      contacts ||= current_user.contacts
       render json: contacts
 
       #TODO: Search by tags

@@ -1,7 +1,7 @@
 module Api::V1
   class CampaignsController < ApiController
     before_action :authenticate_user
-    before_action :set_campaign, only: [:show, :send_email, :send_emails, :daily_statistics, :email, :update, :destroy]
+    before_action :set_campaign, except: [:index]
 
     # GET /v1/campaigns
     def index
@@ -81,6 +81,21 @@ module Api::V1
       else
         render json: @campaign, status: :unprocessable_entity
       end
+    end
+
+    def add_contact
+      contact = Contact.find_by id: params[:contact_id]
+      if @campaign.contacts.include?(contact)
+        render json: false, status: :ok
+      else
+        @campaign.contacts << contact
+        render json: contact, status: :ok
+      end
+    end
+
+    def destroy_contact
+      contact = Contact.find_by id: params[:contact_id]
+      @campaign.contacts.destroy(contact)
     end
 
     # DELETE /v1/campaigns/:id

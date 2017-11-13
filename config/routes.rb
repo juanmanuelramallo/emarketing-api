@@ -11,6 +11,8 @@ Rails.application.routes.draw do
         post :send_emails, on: :member
         post :send_email, on: :member
         get :email, on: :member
+        post :add_contact, on: :member
+        post :destroy_contact, on: :member
       end
       resources :contacts do
         get :search, on: :collection
