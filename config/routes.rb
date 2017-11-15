@@ -11,6 +11,10 @@ Rails.application.routes.draw do
         post :send_emails, on: :member
         post :send_email, on: :member
         get :email, on: :member
+        resources :emails, only: [:index], controller: "campaign_emails" do
+          get :opened, on: :member
+          get :clicked, on: :member
+        end
         post :add_contact, on: :member
         post :destroy_contact, on: :member
       end

@@ -3,5 +3,12 @@ class Email < ApplicationRecord
   belongs_to :campaign
 
   validates :contact, :campaign, presence: true
-  validates :contact, uniqueness: { scope: :campaign_id }
+
+  def opened!
+    update opened_times: opened_times + 1
+  end
+
+  def clicked!
+    update clicks: clicks + 1
+  end
 end

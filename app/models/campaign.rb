@@ -17,7 +17,7 @@ class Campaign < ApplicationRecord
   validates :title, :body, presence: true
 
   def sent_times
-    emails.sum :sent_times
+    emails.count
   end
 
   def opened_times
@@ -26,5 +26,17 @@ class Campaign < ApplicationRecord
 
   def clicks
     emails.sum :clicks
+  end
+
+  def send_to_contacts
+    contacts.each do |contact|
+      email = emails.create(contact: contact)
+      CampaignMailer.send_campaign(self, contact, email).deliver_now
+    end
+  end
+
+  def send_to(contact)
+    email = emails.create(contact: contact)
+    CampaignMailer.send_campaign(self, contact, email).deliver_now
   end
 end

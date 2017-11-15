@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171108194539) do
+ActiveRecord::Schema.define(version: 20171115035810) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,9 +62,8 @@ ActiveRecord::Schema.define(version: 20171108194539) do
   create_table "emails", force: :cascade do |t|
     t.bigint "contact_id"
     t.bigint "campaign_id"
-    t.integer "sent_times"
-    t.integer "opened_times"
-    t.integer "clicks"
+    t.integer "opened_times", default: 0, null: false
+    t.integer "clicks", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["campaign_id"], name: "index_emails_on_campaign_id"

@@ -15,9 +15,7 @@ module Api::V1
 
     # POST /v1/campaign/:id/send_emails
     def send_emails
-      @campaign.contacts.each do |contact|
-        CampaignMailerService.new(campaign: @campaign, contact: contact).deliver_now
-      end
+      @campaign.send_to_contacts
       render json: { message: "La campaña fue enviada correctamente a #{@campaign.contacts.count} #{"contacto".pluralize(@campaign.contacts.count)}" }, status: :ok
     end
 
@@ -25,7 +23,7 @@ module Api::V1
     def send_email
       contact = @campaign.contacts.find_by id: params[:contact_id]
       if contact
-        CampaignMailerService.new(campaign: @campaign, contact: contact).deliver_now
+        @campaign.send_to(contact)
         render json: { message: "Email enviado correctamente a #{contact.full_name}" }, status: :ok
       else
         render json: { message: "Hubo un error al procesar tu solicitud." }, status: :bad_request
