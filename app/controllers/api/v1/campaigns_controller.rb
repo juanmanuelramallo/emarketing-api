@@ -1,7 +1,7 @@
 module Api::V1
   class CampaignsController < ApiController
     before_action :authenticate_user
-    before_action :set_campaign, except: [:index]
+    before_action :set_campaign, except: [:index, :create]
 
     # GET /v1/campaigns
     def index
