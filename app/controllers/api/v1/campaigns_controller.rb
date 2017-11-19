@@ -42,7 +42,7 @@ module Api::V1
 
     # POST /v1/campaigns
     def create
-      campaign = Campaign.new(title: campaign_params[:title], body: campaign_params[:body], user: current_user)
+      campaign = Campaign.new(title: campaign_params[:title], body: campaign_params[:body], spotlighted: campaign_params[:spotlighted], user: current_user)
       if campaign.save
 
         campaign_params[:tag_ids].each do |tag_id|
@@ -63,7 +63,7 @@ module Api::V1
 
     # PUT /v1/campaigns/:id
     def update
-      if @campaign.update(title: campaign_params[:title], body: campaign_params[:body])
+      if @campaign.update(title: campaign_params[:title], body: campaign_params[:body], spotlighted: campaign_params[:spotlighted])
 
         campaign_params[:tag_ids].each do |tag_id|
           tag = Tag.find_by id: tag_id
@@ -114,7 +114,7 @@ module Api::V1
     end
 
     def campaign_params
-      params.require(:campaign).permit(:title, :body, tag_ids: [], contact_ids: [])
+      params.require(:campaign).permit(:title, :body, :spotlighted, tag_ids: [], contact_ids: [])
     end
 
     def search_params

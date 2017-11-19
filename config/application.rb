@@ -30,7 +30,7 @@ module Emarketing
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.action_view.sanitized_allowed_tags = ['strong', 'em', 'a', 'b', 'p', 'span']
-    config.action_view.sanitized_allowed_attributes = ['href', 'title', 'style']
+    config.action_view.sanitized_allowed_tags = ['strong', 'em', 'a', 'b', 'p', 'span', 'blockquote', 'img']
+    config.action_view.sanitized_allowed_attributes = ['href', 'title', 'src', 'style': ['background-color', 'color']]
   end
 end

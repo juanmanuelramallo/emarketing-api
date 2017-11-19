@@ -5,7 +5,11 @@ class CampaignSerializer < ActiveModel::Serializer
              :created_at,
              :sent_times,
              :opened_times,
-             :clicks
+             :clicks,
+             :sent_by_day,
+             :opened_by_day,
+             :clicks_by_day,
+             :spotlighted
 
  has_many :contacts
  has_many :tags

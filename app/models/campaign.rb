@@ -15,17 +15,32 @@ class Campaign < ApplicationRecord
                   ignoring: :accents
 
   validates :title, :body, presence: true
+  before_save :fix_images_size
+
+  scope :spotlighted, -> { where spotlighted: true }
 
   def sent_times
     emails.count
   end
 
   def opened_times
-    emails.sum :opened_times
+    emails.sum(&:opened_times)
   end
 
   def clicks
-    emails.sum :clicks
+    emails.sum(&:clicks)
+  end
+
+  def sent_by_day
+    emails.group("date(created_at)").count
+  end
+
+  def opened_by_day
+    emails.joins(:email_events).where("email_events.event": :open).group("date(email_events.created_at)").count
+  end
+
+  def clicks_by_day
+    emails.joins(:email_events).where("email_events.event": :click).group("date(email_events.created_at)").count
   end
 
   def send_to_contacts
@@ -38,5 +53,11 @@ class Campaign < ApplicationRecord
   def send_to(contact)
     email = emails.create(contact: contact)
     CampaignMailer.send_campaign(self, contact, email).deliver_now
+  end
+
+  private
+
+  def fix_images_size
+    self.body = self.body.gsub("<img ", "<img style='max-width: 100%; max-height: 600px' ")
   end
 end

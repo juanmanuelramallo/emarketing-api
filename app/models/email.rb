@@ -1,14 +1,27 @@
 class Email < ApplicationRecord
   belongs_to :contact
   belongs_to :campaign
+  has_many :email_events
 
   validates :contact, :campaign, presence: true
 
   def opened!
-    update opened_times: opened_times + 1
+    email_events.create(event: :open)
   end
 
   def clicked!
-    update clicks: clicks + 1
+    email_events.create(event: :click)
+  end
+
+  def opened_times
+    email_events.where(event: :open).count
+  end
+
+  def clicks
+    email_events.where(event: :click).count
+  end
+
+  def sent_times
+    Email.where(campaign: campaign, contact: contact).count
   end
 end

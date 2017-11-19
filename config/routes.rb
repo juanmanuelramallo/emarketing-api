@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   scope module: 'api' do
     namespace :v1 do
+      resources :dashboard, only: [:index]
       resources :users, only: [:create, :update] do
         get :find_by_email, on: :collection
       end
