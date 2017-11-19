@@ -17,4 +17,8 @@ class EmailEvent < ApplicationRecord
       [tag.name, by_date]
     end.to_h
   end
+
+  def self.opened_today(user)
+    emails_opened_today = EmailEvent.joins(email: :contact).where("date(email_events.created_at) = ? AND contacts.user_id = ? AND event = ?", Date.today, user.id, EmailEvent.events[:open])
+  end
 end

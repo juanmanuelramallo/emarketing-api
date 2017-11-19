@@ -24,4 +24,8 @@ class Email < ApplicationRecord
   def sent_times
     Email.where(campaign: campaign, contact: contact).count
   end
+
+  def self.sent_today(user)
+    Email.joins(:contact).where("date(emails.created_at) = ? AND contacts.user_id = ?", Date.today, user.id)
+  end
 end
