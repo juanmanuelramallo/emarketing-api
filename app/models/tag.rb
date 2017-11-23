@@ -9,9 +9,12 @@ class Tag < ApplicationRecord
     contacts_grouped_by_tag = current_user.contacts.joins(:tags).group("tags.name").count
     contacts_grouped_by_tag_sorted = contacts_grouped_by_tag.sort_by { |tag_name, count| count }.reverse
     contacts_grouped_by_tag = contacts_grouped_by_tag_sorted.take(9).to_a
-    others_count = (contacts_grouped_by_tag_sorted.to_a - contacts_grouped_by_tag).to_h.inject(0) do |sum, (tag_name, count)|
-      sum += count
+    if contacts_grouped_by_tag.size == 9
+      others_count = (contacts_grouped_by_tag_sorted.to_a - contacts_grouped_by_tag).to_h.inject(0) do |sum, (tag_name, count)|
+        sum += count
+      end
+      contacts_grouped_by_tag.push(["Otros", others_count ])
     end
-    contacts_grouped_by_tag.push(["Otros", others_count ]).to_h
+    contacts_grouped_by_tag.to_h
   end
 end

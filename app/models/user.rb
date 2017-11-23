@@ -9,4 +9,12 @@ class User < ApplicationRecord
   validates :email, format: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
   validates :password, presence: { length: 6 }
   validates :email, uniqueness: true
+
+  after_create :create_default_tags
+
+  private
+
+  def create_default_tags
+    ["Músico", "Deporte", "Arte", "Cine", "Tecnología"].each { |tag_name| self.tags.create name: tag_name }
+  end
 end
